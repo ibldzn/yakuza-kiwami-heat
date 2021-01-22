@@ -10,42 +10,42 @@
 
 DWORD WINAPI entry(LPVOID lp_param)
 {
-	try
-	{
-		mem::init();
-		hooks::init();
-	}
-	catch (const std::exception& ex)
-	{
-		MessageBoxA(NULL, ex.what(), "ERROR", MB_OK | MB_ICONERROR);
-		FreeLibraryAndExitThread(static_cast<HMODULE>(lp_param), EXIT_FAILURE);
-	}
+    try
+    {
+        mem::init();
+        hooks::init();
+    }
+    catch (const std::exception& ex)
+    {
+        MessageBoxA(NULL, ex.what(), "ERROR", MB_OK | MB_ICONERROR);
+        FreeLibraryAndExitThread(static_cast<HMODULE>(lp_param), EXIT_FAILURE);
+    }
 
-	while (!(GetAsyncKeyState(VK_END) & 0x8000))
-		Sleep(50);
+    while (!(GetAsyncKeyState(VK_END) & 0x8000))
+        Sleep(50);
 
-	FreeLibraryAndExitThread(static_cast<HMODULE>(lp_param), EXIT_SUCCESS);
+    FreeLibraryAndExitThread(static_cast<HMODULE>(lp_param), EXIT_SUCCESS);
 }
 
 BOOL detach()
 {
-	mem::destroy();
+    mem::destroy();
 
-	return TRUE;
+    return TRUE;
 }
 
 BOOL APIENTRY DllMain(HINSTANCE h_inst, DWORD dw_reason, LPVOID lp_reserved)
 {
-	if (dw_reason == DLL_PROCESS_ATTACH)
-	{
-		DisableThreadLibraryCalls(static_cast<HMODULE>(h_inst));
-		if (HANDLE thread = CreateThread(nullptr, NULL, entry, nullptr, NULL, nullptr))
-			CloseHandle(thread);
-	}
-	else if (dw_reason == DLL_PROCESS_DETACH)
-	{
-		return detach();
-	}
+    if (dw_reason == DLL_PROCESS_ATTACH)
+    {
+        DisableThreadLibraryCalls(static_cast<HMODULE>(h_inst));
+        if (HANDLE thread = CreateThread(nullptr, NULL, entry, nullptr, NULL, nullptr))
+            CloseHandle(thread);
+    }
+    else if (dw_reason == DLL_PROCESS_DETACH)
+    {
+        return detach();
+    }
 
-	return TRUE;
+    return TRUE;
 }

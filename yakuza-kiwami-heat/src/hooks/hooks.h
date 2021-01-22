@@ -11,11 +11,11 @@
 
 namespace hooks
 {
-	void init();
+    void init();
 
-	namespace heat_manager
-	{
-		using fn = __int64(__fastcall*)(__int64 this_ptr, float amount);
-		__int64 __fastcall hook_func(__int64 this_ptr, float amount);
-	}
+    namespace heat_manager
+    {
+        using fn = __int64(__fastcall*)(__int64 this_ptr, float amount);
+        __int64 __fastcall hook_func(__int64 this_ptr, float amount);
+    }
 }
